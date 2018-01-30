@@ -94,6 +94,17 @@ if [ ! -n "${BULLETTRAIN_VIRTUALENV_PREFIX+1}" ]; then
   BULLETTRAIN_VIRTUALENV_PREFIX=🐍
 fi
 
+# PYENV
+if [ ! -n "${BULLETTRAIN_PYENV_PREFIX+1}" ]; then
+  BULLETTRAIN_PYENV_PREFIX="🐍 "
+fi
+if [ ! -n "${BULLETTRAIN_PYENV_BG+1}" ]; then
+  BULLETTRAIN_PYENV_BG='green'
+fi
+if [ ! -n "${BULLETTRAIN_PYENV_FG+1}" ]; then
+  BULLETTRAIN_PYENV_FG='white'
+fi
+
 # NVM
 if [ ! -n "${BULLETTRAIN_NVM_BG+1}" ]; then
   BULLETTRAIN_NVM_BG=green
@@ -439,6 +450,13 @@ prompt_hg() {
   fi
 }
 
+# Show the current version of pyenv. Only display if the version is local.
+prompt_local_pyenv() {
+  if which pyenv &> /dev/null && pyenv_local=$(pyenv local 2>/dev/null); then
+    prompt_segment $BULLETTRAIN_PYENV_BG $BULLETTRAIN_PYENV_FG $BULLETTRAIN_PYENV_PREFIX"${pyenv_local}"
+  fi
+}
+
 # Dir: current working directory
 prompt_dir() {
   local dir=''
@@ -453,7 +471,7 @@ prompt_dir() {
     dir="${dir}%0~"
   else
     #medium directories (default case)
-    dir="${dir}%4(c:...:)%3c"
+    dir="${dir}%4(c:…/:)%2c"
   fi
 
   prompt_segment $BULLETTRAIN_DIR_BG $BULLETTRAIN_DIR_FG $dir
@@ -555,7 +573,6 @@ prompt_status() {
   symbols=()
   [[ $RETVAL -ne 0 && $BULLETTRAIN_STATUS_EXIT_SHOW != true ]] && symbols+="✘"
   [[ $RETVAL -ne 0 && $BULLETTRAIN_STATUS_EXIT_SHOW == true ]] && symbols+="✘ $RETVAL"
-  [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡%f"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="⚙"
 
   if [[ -n "$symbols" && $RETVAL -ne 0 ]]; then
