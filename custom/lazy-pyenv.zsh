@@ -7,4 +7,4 @@ pyenv_init() {
     source "$ZSH/plugins/pyenv/pyenv.plugin.zsh"
 }
 
-lazy_load pyenv_init pyenv 2to3 easy_install pip python python2 python3
+lazy_load pyenv_init pyenv 2to3 easy_install pip python python2 python3 tmuxp
