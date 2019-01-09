@@ -452,7 +452,8 @@ prompt_hg() {
 
 # Show the current version of pyenv. Only display if the version is local.
 prompt_local_pyenv() {
-  if [ "$PYENV_INIT" = true ] && pyenv_local=$(pyenv local 2>/dev/null); then
+  # PYENV_INIT is set by lazy-pyenv.zsh, not pyenv itself
+  if [ -v PYENV_INIT ] && pyenv_local=$(pyenv local 2>/dev/null); then
     prompt_segment $BULLETTRAIN_PYENV_BG $BULLETTRAIN_PYENV_FG $BULLETTRAIN_PYENV_PREFIX"${pyenv_local}"
   fi
 }
