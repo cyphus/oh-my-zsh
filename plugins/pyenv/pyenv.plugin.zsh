@@ -2,7 +2,7 @@
 # the 'pyenv_prompt_info' function. Also loads pyenv-virtualenv if available.
 
 if which pyenv > /dev/null; then
-    eval "$(pyenv init - zsh)"
+    eval "$(pyenv init --path)"
     if which pyenv-virtualenv-init > /dev/null; then
         eval "$(pyenv virtualenv-init - zsh)"
     fi
